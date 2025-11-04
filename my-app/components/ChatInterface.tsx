@@ -62,6 +62,16 @@ export default function ChatInterface({ fullScreen = true }: ChatInterfaceProps)
       timestamp: Date.now(),
     };
 
+    // Heuristic: open James Cameron panel when user asks for it
+    try {
+      const q = content.toLowerCase();
+      const hasName = q.includes('제임스 카메론') || q.includes('제임스카메론') || q.includes('james cameron');
+      const intent = q.includes('영화') || q.includes('작품') || q.includes('리스트') || q.includes('보여줘') || q.includes('추천');
+      if (typeof window !== 'undefined' && hasName && intent) {
+        window.dispatchEvent(new CustomEvent('open-james-cameron'));
+      }
+    } catch {}
+
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
     setError(null);

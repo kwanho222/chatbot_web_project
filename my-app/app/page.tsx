@@ -1,4 +1,5 @@
 import ChatInterface from '@/components/ChatInterface';
+import JamesCameron from '@/components/JamesCameron';
 
 export default function Home() {
   return (
@@ -8,8 +9,10 @@ export default function Home() {
         <ChatInterface fullScreen={false} />
       </div>
 
-      {/* Placeholder main area for movie site (kept white background) */}
-      <div className="pointer-events-none absolute inset-0" />
+      {/* Center area content */}
+      <main className="flex min-h-screen items-center justify-center">
+        <JamesCameron />
+      </main>
     </div>
   );
 }
