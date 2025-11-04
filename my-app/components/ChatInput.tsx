@@ -45,7 +45,7 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Type a message... (Press Enter to send, Shift+Enter for new line)"
+            placeholder="메시지를 입력하세요... (Enter: 전송, Shift+Enter: 줄바꿈)"
             disabled={disabled}
             rows={1}
             className="w-full resize-none border-0 bg-transparent px-4 py-3 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 dark:text-gray-100 dark:placeholder-gray-400 sm:text-base"
@@ -56,7 +56,7 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
           onClick={handleSend}
           disabled={!input.trim() || disabled}
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-blue-600"
-          aria-label="Send message"
+          aria-label="메시지 전송"
         >
           <svg
             className="h-5 w-5"

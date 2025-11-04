@@ -26,10 +26,10 @@ export default function MessageList({ messages, isLoading }: MessageListProps) {
         <div className="flex h-full items-center justify-center">
           <div className="text-center">
             <h2 className="mb-2 text-xl font-semibold text-gray-700 dark:text-gray-300">
-              Welcome to Gemini Chat Clone
+              대화를 시작해 보세요
             </h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Start a conversation by typing a message below
+              아래 입력창에 메시지를 입력하고 Enter를 눌러 전송하세요.
             </p>
           </div>
         </div>

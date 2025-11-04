@@ -252,7 +252,7 @@ git commit -m "Initial commit"
 - GitHub에 새 저장소 생성
 - 로컬 저장소를 GitHub에 연결
 ```bash
-git remote add origin <https://github.com/kwanho222/EC_project.git>
+git remote add origin <https://github.com/kwanho222/chatbot_web_project>
 git branch -M main
 git push -u origin main
 ```
@@ -278,3 +278,11 @@ git push -u origin main
 - 커스텀 도메인 연결
 - Vercel Analytics 설정
 - 성능 모니터링 설정
+
+# 6 영화 사이트와 챗봇
+
+## 챗봇을 사용하여 검색,및 추천을 해주는 영화 추천 사이트를 만들거임
+
+### 다양한 영화 포스터와 설명,장르들을 불러와 구분,분류함
+
+####장르별로 챗봇에게 질문하면 질문에 맞는 장르,설명,포스터,등등 다양한 요소를 합쳐 추천하거나 검색결과를 알려줌

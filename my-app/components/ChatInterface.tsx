@@ -7,7 +7,11 @@ import ChatInput from './ChatInput';
 
 const STORAGE_KEY = 'chat-history';
 
-export default function ChatInterface() {
+type ChatInterfaceProps = {
+  fullScreen?: boolean;
+};
+
+export default function ChatInterface({ fullScreen = true }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -196,11 +200,11 @@ export default function ChatInterface() {
   }, [abortController]);
 
   return (
-    <div className="flex h-screen flex-col bg-white dark:bg-gray-900">
+    <div className={`flex ${fullScreen ? 'h-screen' : 'h-full'} flex-col bg-white dark:bg-gray-900`}>
       {/* Header */}
       <header className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-800">
         <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100 sm:text-xl">
-          Gemini Chat Clone
+          대화창
         </h1>
         <div className="flex gap-2">
           {isLoading && (
@@ -208,14 +212,14 @@ export default function ChatInterface() {
               onClick={handleStop}
               className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
             >
-              Stop
+              중지
             </button>
           )}
           <button
             onClick={handleNewChat}
             className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
           >
-            New Chat
+            새 채팅
           </button>
         </div>
       </header>
