@@ -1,10 +1,10 @@
+// app/api/chat/route.ts
 import { NextRequest } from 'next/server';
 import OpenAI from 'openai';
 import { ChatRequest } from '@/types/chat';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+export const dynamic = 'force-dynamic'; // 빌드 시 프리렌더 방지
+export const runtime = 'nodejs';        // (선택) 노드 런타임 명시
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,13 +17,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!process.env.OPENAI_API_KEY) {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
       return new Response(
         JSON.stringify({ error: 'OpenAI API key is not configured' }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
+    // ✅ 핸들러 내부에서 OpenAI 클라이언트 생성 (빌드 타임 실행 방지)
+    const openai = new OpenAI({ apiKey });
+
+    // 필요 시 모델은 환경에 맞게 교체 가능 ('gpt-4o-mini' 등)
     const stream = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: messages.map(({ role, content }) => ({ role, content })),
@@ -33,16 +38,25 @@ export async function POST(req: NextRequest) {
     });
 
     const encoder = new TextEncoder();
+
     const readableStream = new ReadableStream({
       async start(controller) {
         try {
           for await (const chunk of stream) {
-            const content = chunk.choices[0]?.delta?.content || '';
+            // v4 SDK 스트림 청크 호환 처리
+            const content =
+              // 일반적인 delta.content
+              (chunk as any)?.choices?.[0]?.delta?.content ??
+              // 혹시 message.content로 오는 경우 대비
+              (chunk as any)?.choices?.[0]?.message?.content ??
+              '';
+
             if (content) {
               const data = `data: ${JSON.stringify({ content })}\n\n`;
               controller.enqueue(encoder.encode(data));
             }
           }
+
           controller.enqueue(encoder.encode('data: [DONE]\n\n'));
           controller.close();
         } catch (error) {
@@ -57,7 +71,7 @@ export async function POST(req: NextRequest) {
     return new Response(readableStream, {
       headers: {
         'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
+        'Cache-Control': 'no-cache, no-transform',
         'Connection': 'keep-alive',
       },
     });
@@ -70,4 +84,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
